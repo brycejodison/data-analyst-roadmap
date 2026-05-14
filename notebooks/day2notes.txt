@@ -1,0 +1,209 @@
+NOTES FOR DAY 2 of DATA-ANALYST-ROADMAP
+
+SQL -> Structured Query Language
+    Allows access to database and manipulation of data contained therein
+
+
+SQL CAN:
+    execute queries against a database
+    ->Command or question sent to sql database. Sometimes the question can change the data
+    Set permissions on tables and views
+    ->permissions can allow certain users to execute queries on specific tables
+    ->views give specific users access to pre-defined queries 
+
+
+DATABASE TABLES:
+    A database is identified by a NAME and contains records(rows) with data
+    eg Customer table with records:
+        name 
+        age 
+        address
+        ...
+
+    Customer is the table name and name, age, and address are records 
+
+
+
+----SQL Syntax ------
+
+1.) SELECT
+
+-SELECT statement is used to select (retrieve) data from a database
+
+format:
+    SELECT column1, column2
+    FROM table_name;
+
+-In our example database:
+
+    SELECT city
+    FROM customers
+    (see screenshot 1a from SELECT)
+
+will return all the city column from customers table (a compilation of all cities present in customers table, duplicates included)
+
+-An asterisk(*) can be used to select all records from a table
+
+    SELECT *
+    FROM customers;
+    (see screenshot 1b in SELECT)
+
+will return all records from customers table
+
+-Another example
+
+    SELECT city, state, signup_date
+    FROM customers;
+    (see screenshot 1c in SELECT)
+
+will return the city, state, and signup_date column from each record 
+
+-We can alter the wording of the previous query to retrieve results differently
+
+    SELECT state, city, signup_date
+    FROM customers;
+    (see screenshot 1d in SELECT)
+
+will return state first and then city, as opposed to city then state. 
+
+
+2.) DISTINCT modifier
+
+-DISTINCT modifies the SELECT statement and will return only distinct entries into columns
+
+-format:
+    SELECT DISTINCT column1, column2, ...
+    FROM table_name
+
+-Example from our database
+
+    SELECT DISTINCT city
+    FROM customers;
+    (see screenshot 2a in DISTINCT)
+
+will return all records in the city column without duplicates
+
+-When distinct has multiple columns in its statement, it will return unique row combinations
+ex:
+    Assume we have a Customer table with columns city, signup_date with records
+
+        Chicago, 12-01-2001
+        Chicago, 12-02-2001
+
+    with a query
+
+        SELECT DISTINCT city, signup_date 
+        FROM customers;
+
+    although both share column1 entries (Chicago), they have a diferent signup_date. This makes them row unique
+    and thus they will both be selected
+
+-An example from our database
+
+    SELECT DISTINCT city, state
+    FROM customers; 
+    (see screenshot 2b in DISTINCT)
+
+Will return all unique city, states attached to all customers
+
+
+3.) WHERE clause
+
+format:
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition;
+
+WHERE clause is used to filter row entries that adhere to the condition present
+
+-An example
+
+    SELECT *
+    FROM customers
+    WHERE city = 'Chicago'
+    (see screenshot 3a in WHERE)
+
+Would retrieve all row entries where the column city is the value 'Chicago'
+
+->WHERE is also used in UPDATE and DELETE, will be covered later!
+
+-> String conditionals should be enclosed in single quotes: 'string_value'
+
+-> Integer conditionals should not be enclosed in quotes
+
+-Another example
+
+    SELECT first_name, last_name
+    FROM customers
+    WHERE city = 'Chicago'
+    (see screenshot 3b in WHERE)
+
+-Will return the first and last name of customers living in Chicago
+
+->SQL supports many different conditional statements, see screenshot 3c in WHERE for a full list.
+
+
+4.) ORDER BY keyword
+
+-The ORDER BY keyword is used to sort the resulting set in either ASC(ascending) or DESC(descending) ORDER
+
+format:
+
+    SELECT column1, column2, ...
+    FROM table_name
+    ORDER BY column1, column2, ... ASC|DESC;
+
+-> If order is not specified, default is ascending
+
+-An example:
+
+    SELECT *
+    FROM customers
+    ORDER BY signup_date
+    (see screenshot 4a in ORDER BY)
+
+Will select all records in customers and sort them ascending by signup_date
+
+-If we just want the full names of customers ordered by signup_date, we can do
+
+    SELECT first_name, last_name
+    FROM customers
+    ORDER BY signup_date;
+    (see screenshot 4b in ORDER BY)
+
+-We can order by multiple columns. SQL will first order by column1, if any values in column1 are identical,
+they will then be sorted by column2 
+
+    SELECT first_name, last_name, city
+    FROM customers
+    ORDER BY city, last_name;
+    (see screenshot 4c in ORDER BY)
+
+This query will order first and last names of customers by city first. (Chicago would appear before Joliet).
+If customers share the same city, they will be sorted by last name.
+
+5.) AND / OR operators
+
+-> AND and OR operators can be used in conjunction with WHERE clause to 
+set multiple conditions 
+
+-Maybe we want all customers records who live in Chicago and whose name starts with BY
+
+    SELECT *
+    FROM customers
+    WHERE city = 'Chicago' AND first_name LIKE 'B%';
+    (see screenshot 5a in ANDOR)
+
+LIKE 'B%' looks at the first letter in first_name and matches if it is B
+
+-We can use OR to chain separated ANDS together
+Lets say we want to select customers who live in Illinois (IL) and have a last name starting
+with A or B
+
+    SELECT *
+    FROM customers
+    WHERE state = 'IL'
+    AND (last_name LIKE 'A%' OR last_name LIKE 'B%');
+    (see screenshot 5b in ANDOR)
+
+    
