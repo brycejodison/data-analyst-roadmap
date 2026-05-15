@@ -121,3 +121,9 @@ SELECT *
 FROM products
 WHERE price BETWEEN 50 AND 1000
 AND category IN('Electronics', 'Furniture');
+
+------------------------------
+
+SELECT customers.first_name, customers.last_name, orders.order_date
+FROM customers
+INNER JOIN orders ON customers.customer_id = orders.order_id;

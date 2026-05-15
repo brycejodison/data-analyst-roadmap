@@ -218,7 +218,28 @@ format:
     (see screeenshot 6b in BETWEEN)
 
 
-9.) INNER JOINS
+9.) INNER JOIN
+
+-INNER JOIN will join two tables if a given match is found in both tables.
+If two tables share a columnName and value at a given row, they are matched 
+
+format:
+    SELECT column_name(s)
+    from table1
+    INNER JOIN table2
+    ON table1.column_nameA = table2.column_nameA;
+
+-In our example database:
+
+    SELECT customers.first_name, customers.last_name, orders.order_date
+    from customers
+    JOIN orders
+    ON customers.customer_id = orders.customer_id;
+    (see 7a in JOIN)
+
+Will match records in customers with records in orders that have the same value in their respective
+customer_id columns. As we selected the first name and last name of the customer, along with the order_date,
+that is what will be fetched.
 
 
 
