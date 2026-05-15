@@ -1,0 +1,230 @@
+NOTES FOR DAY 3 DATA ANALYST ROADMAP
+
+1.) MIN function
+
+format:
+    SELECT MIN(column_name)
+    FROM table_name
+    WHERE condition;
+
+-The min function returns the smallest value from a category.
+-> Works with numeric, string and date data types
+
+-Selecting the earliest signup_date
+
+    SELECT MIN(signup_date)
+    FROM customers;
+    (see screenshot 1a in MIN)
+
+will return the earliest date a customer signed up
+
+-When using the MIN function, the returned column will not have a name
+use AS keyword to give a descriptive name
+
+    SELECT MIN(signup_date) AS EarliestSignupDate
+    FROM customers;
+    (see screenshot 1b in MIN)
+
+will return a column named EarliestSignupDate that holds the earliest signup date
+
+-The min function is an aggregate function and is thus typically used with GROUP BY
+The exact functionality of GROUP BY is not important yet, here is a basic example
+
+    SELECT MIN(signup_date) AS EarliestSignupDate, city
+    FROM customers
+    GROUP BY city;
+    (see screenshot 1c in MIN)
+
+This will group all records by cities; multiple records whose city is 'Chicago' will be in a group.
+We will then select the earliest signup_date from each of these columns. 
+
+
+2.) MAX
+
+format:
+    SELECT MIN(column_name)
+    FROM table_name;
+
+-MAX works largely in the same way as MIN, and will thus not be covered.
+
+3.) COUNT
+
+-The count function counts the number of rows that match a specificed criterion
+
+format:
+    SELECT COUNT([DISTINCT] column_name | *)
+    FROM table_name
+    WHERE condition;
+
+
+-Counting the total number of rows in customers table_name (using * will include null values)
+
+    SELECT COUNT(*)
+    from customers;
+    (see screenshot 2a in COUNT)
+
+-Specifying just the column name will count all non-null values in the column
+
+    SELECT COUNT(city)
+    from customers;
+    (see screenshot 2b in COUNT)
+
+-We can count unique cities by including the distinct keyword
+
+    SELECT COUNT(DISTINCT city)
+    from customers;
+    (see screenshot 2c in COUNT)
+
+-We can use WHERE clause to count entries that adhere to a condition
+
+    SELECT COUNT(first_name)
+    FROM customers
+    WHERE city = 'Chicago';
+    (see screenshoto 2d in COUNT)
+
+This will count the total amount of records with a first_name that is not NULL whose city
+is Chicago
+
+-You can use an ALIAS for a more descriptive column name
+
+    SELECT COUNT(first_name) AS "num people from chicago"
+    FROM customers
+    WHERE city = 'Chicago';
+    (see screenshot 2e in COUNT)
+
+-We can use GROUP BY (covered more later) to count the total amount of records belonging to
+a unique column
+
+    SELECT COUNT(*) AS "Num people in" , city
+    FROM customers
+    GROUP BY city;
+    (see screenshot 2f in COUNT)
+
+
+4.) SUM function
+
+-The sum function is used to add up all values in a given numeric column
+-> we will use the products table for these example
+
+format:
+    SELECT SUM(column_name)
+    FROM table_name
+    WHERE condition;
+
+
+-Lets add the price of all of the values in the products table
+
+    SELECT SUM(price)
+    FROM products;
+    (see screenshot 3a in SUM)
+
+-We can use alias to add better names
+
+    SELECT SUM(price) as "Total Value of Inventory"
+    FROM products;
+    (see screenshot 3b in SUM)
+
+-We can use where to get the total value of a given category
+
+    SELECT SUM(price) as "Total value of electronics"
+    FROM  products
+    WHERE category = 'Electronics'
+    (See screenshot 3c in SUM)
+
+-We can use GROUP BY to get the total value of every category
+
+    SELECT category, SUM(price)
+    FROM products
+    GROUP BY category;
+    (see screenshot 3d in SUM)
+
+5.) AVG function
+
+-Average simply calculates the average of a given set of numerics
+
+format:
+    SELECT AVG(column_name)
+    FROM table_name
+    WHERE condition
+
+-> Functions in exactly the same way as SUM, but returns average rather than sum.
+
+-We can display both the sum and avg of all categories:
+
+    SELECT category, SUM(price) AS "Total Value of All Items", AVG(price) AS "Average Value of All Items"
+    FROM products
+    GROUP BY category;
+    (see screenshot 4a in AVG)
+
+
+6.) WILDCARDS
+
+-> USed in conjunction with WHERE and LIKE
+
+--> See cheatsheat in WILDCARD Folder under day3
+
+7.) IN operator
+
+IN serves as a shorthand for multiple OR statements
+
+format:
+    SELECT column_name(s)
+    FROM table_name
+    WHERE column_name IN (value1, value2, ...)
+
+
+-We can use IN in the same way we use OR
+
+    SELECT first_name, city
+    FROM customers
+    WHERE city IN ('Chicago', 'Elgin');
+    (see screenshot 5a in IN)
+
+-We can combine NOT with IN to grab all rows that are not in chicago or Elgin
+
+    SELECT first_name, city
+    FROM customers
+    WHERE city NOT IN ('Chicago', 'Elgin');
+    (see screenshot 5b in IN)
+
+8.) BETWEEN operator
+
+Between will filter for values that fall within a given range (inclusive)
+--> DATES: all values between two dates 
+--> STRING: all values that fall alphabetically between strings 
+BETWEEN 'HELLO' AND 'HELP'
+-> 'HELIUM' is between these two values but 'DYNAMITE' is not
+--> NUMERIC: Self explanatory
+
+format:
+    SELECT column_name(s)
+    FROM table_name
+    WHERE column_name BETWEEN value1 AND value2;
+
+
+-Check if price is within a certain range 
+
+    SELECT *
+    FROM products
+    WHERE price BETWEEN 100 AND 300;
+    (see screenshot 6a in BETWEEN)
+
+-We can use it in conjunction with other operators for more precise queries
+
+    SELECT *
+    FROM products
+    WHERE price BETWEEN 50 AND 1000
+    AND category IN('Electronics', 'Furniture');
+    (see screeenshot 6b in BETWEEN)
+
+
+9.) INNER JOINS
+
+
+
+
+
+
+
+
+
