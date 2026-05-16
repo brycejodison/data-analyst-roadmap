@@ -124,6 +124,18 @@ AND category IN('Electronics', 'Furniture');
 
 ------------------------------
 
+--7a)
 SELECT customers.first_name, customers.last_name, orders.order_date
 FROM customers
 INNER JOIN orders ON customers.customer_id = orders.order_id;
+
+--7b)
+SELECT customers.first_name, products.product_name, order_items.quantity
+from customers
+JOIN orders 
+ON customers.customer_id = orders.customer_id
+JOIN order_items
+ON orders.order_id = order_items.order_id
+JOIN products
+ON order_items.product_id = products.product_id
+ORDER BY customers.first_name;

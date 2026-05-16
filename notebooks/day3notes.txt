@@ -241,6 +241,19 @@ Will match records in customers with records in orders that have the same value 
 customer_id columns. As we selected the first name and last name of the customer, along with the order_date,
 that is what will be fetched.
 
+-This join will show us the first name of a customer, what they ordered and how much they ordered
+
+SELECT customers.first_name, products.product_name, order_items.quantity
+from customers
+JOIN orders 
+ON customers.customer_id = orders.customer_id
+JOIN order_items
+ON orders.order_id = order_items.order_id
+JOIN products
+ON order_items.product_id = products.product_id
+ORDER BY customers.first_name;
+
+This will also order the result by first name
 
 
 
