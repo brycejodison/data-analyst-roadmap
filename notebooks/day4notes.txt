@@ -63,3 +63,42 @@ Due to it being the same(and largely never used), we will not cover it.
 
 Useful when wanting to validate data that should align 
 
+As our data set contains no mismatched information (and it is really self explanatory), we will 
+not showcase FULL JOIN
+
+4.) HAVING
+
+-HAVING is a way to filter selects after grouping using GROUP BY
+
+format:
+    SELECT column1, aggregate_function(column2), column3,  ..
+    FROM table_name
+    WHERE condition
+    GROUP BY column1, column3
+    HAVING condition -- The condition on aggregate data
+    ORDER BY column_name
+
+
+-We can use having to filter categories with total value more than some int
+
+    SELECT category, SUM(quantiy)
+    FROM products
+    GROUP BY category
+    HAVING SUM(quantity) > 100;
+    (see screenshot 4a)
+
+
+-Using HAVING to sort customers who have ordered more than x things
+
+    SELECT customers.first_name, customers.last_name, SUM(quantity)
+    FROM customers
+    JOIN orders
+    ON customers.customer_id = orders.customer_id
+    JOIN order_items
+    ON orders.order_id = order_items.order_id
+    GROUP BY customers.first_name
+    HAVING SUM(quantiy) > 2;
+    (see screenshot 4b)
+
+
+

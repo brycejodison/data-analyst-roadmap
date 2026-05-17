@@ -49,3 +49,19 @@ FROM customers
 LEFT JOIN orders
 ON customers.customer_id = orders.customer_id
 WHERE orders.customer_id IS NULL;
+
+--4a)
+SELECT category, SUM(price)
+FROM products
+GROUP BY category
+HAVING SUM(price) > 50;
+
+--4b)
+SELECT customers.customer_id, customers.first_name, customers.last_name, SUM(order_items.quantity)
+FROM customers
+JOIN orders
+ON customers.customer_id = orders.customer_id
+JOIN order_items
+ON orders.order_id = order_items.order_id
+GROUP BY customers.customer_id
+HAVING SUM(order_items.quantity) > 2;
