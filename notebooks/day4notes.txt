@@ -1,0 +1,65 @@
+DAY 4 NOTES FOR DATA ANALYST ROADMAP
+
+1.) LEFT JOIN
+
+- While JOIN (INNER JOIN) will select only those records with a match in both tables,
+LEFT JOIN will return all records in the left table and display NULL if there is no match
+in the right table.
+
+format:
+    SELECT column_name(s)
+    FROM table
+    LEFT JOIN table2
+    ON table1.column_name = table2.column_name;
+
+-From our database
+
+    SELECT customers.first_name, customers.last_name, orders.order_id
+    FROM customers
+    LEFT JOIN orders
+    ON customers.customer_id = orders.customer_id
+    ORDER BY customers.first_name, customers.last_name;
+    (see screenshot 1a in LEFT JOIN)
+
+this will return all customers and their order ids. If they have not placed an
+order, the value will be NULL
+
+-We can use LEFT JOIN in combination with COALESCE to see the total amount of order
+a customer has placed
+
+    SELECT customers.customer_id, customers.first_name, customers.last_name,
+    COALESCE(SUM(order_items.quantity), 0)
+    FROM customers
+    LEFT JOIN orders
+    ON customers.customer_id = orders.customer_id
+    LEFT JOIN order_items
+    ON orders.order_id = order_items.order_id
+    GROUP BY customers.customer_id;
+    (see screenshot 1b in LEFT JOIN)
+
+This will list all customers (even those without order_ids) and will list the total amount of items they
+have ordered. If they have not placed an order and thus have null, it is instead replaced with 0
+
+-We can display only those people with NULL to easily find people without orders
+
+    SELECT customers.first_name, customers.last_name, orders.order_id
+    FROM customers
+    LEFT JOIN orders
+    ON customers.customer_id = orders.customer_id
+    WHERE orders.customer_id IS NULL;
+    (see screenshot 1c in LEFT JOIN)
+
+
+2.) RIGHT JOIN
+
+-A RIGHT JOIN is exactly the same as a LEFT JOIN; just flip the columns. 
+Due to it being the same(and largely never used), we will not cover it.
+
+3.) FULL JOIN 
+
+-FULL JOINS will give all values present in both columns:
+-> LEFT JOINS show missing values when table1 is present and table2 is not
+--> FULL JOINS are just a combination of LEFT and RIGH JOINS
+
+Useful when wanting to validate data that should align 
+
